@@ -6,6 +6,7 @@ from .models import CarModel
 from .serializers import CarSerializer
 
 
+
 def cars_filter(query: QueryDict) -> QuerySet:
     qs = CarModel.objects.all()
     for k, v in query.items():
@@ -24,10 +25,7 @@ def cars_filter(query: QueryDict) -> QuerySet:
                 qs = qs.filter(model__icontains =v)
             case 'model__istartswith':
                 qs = qs.filter(model__istartswith=v)
-            # case 'sort':
-            #     qs = qs.order_by(v)
-            # case 'sort_max':
-            #     qs = qs.order_by(f'-{v}')
+
             case'order':
                 fields = CarSerializer.Meta.fields
                 fields = [*fields, *[f'-{field}' for field in fields]]

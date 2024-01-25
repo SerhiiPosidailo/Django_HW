@@ -1,15 +1,11 @@
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
 
-
+from .filters import cars_filter
 from .models import CarModel
 from .serializers import CarSerializer
-from .filters import cars_filter
 
 
-class CarListCreateView(ListCreateAPIView):
+class CarListCreateView(ListAPIView):
     queryset = CarModel.objects.all()
     serializer_class = CarSerializer
 
@@ -20,3 +16,6 @@ class CarListCreateView(ListCreateAPIView):
 class CarsRetriveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = CarModel.objects.all()
     serializer_class = CarSerializer
+
+
+
