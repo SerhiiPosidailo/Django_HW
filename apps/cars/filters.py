@@ -1,7 +1,9 @@
 from django.db.models import QuerySet
 from django.http import QueryDict
+from rest_framework.exceptions import ValidationError
 
 from .models import CarModel
+from .serializers import CarSerializer
 
 
 def cars_filter(query: QueryDict) -> QuerySet:
@@ -22,9 +24,19 @@ def cars_filter(query: QueryDict) -> QuerySet:
                 qs = qs.filter(model__icontains =v)
             case 'model__istartswith':
                 qs = qs.filter(model__istartswith=v)
-            case 'sort':
+            # case 'sort':
+            #     qs = qs.order_by(v)
+            # case 'sort_max':
+            #     qs = qs.order_by(f'-{v}')
+            case'order':
+                fields = CarSerializer.Meta.fields
+                fields = [*fields, *[f'-{field}' for field in fields]]
+
+                if v not in fields:
+                    raise ValidationError({'details': f'Please choice order from {", ".join(fields)}'})
+
                 qs = qs.order_by(v)
-            case 'sort_max':
-                qs = qs.order_by(f'-{v}')
+            case _:
+                raise ValidationError({'Details': f'{k} is not a allowed here'})
 
     return qs
