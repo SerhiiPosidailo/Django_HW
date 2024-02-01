@@ -10,7 +10,7 @@ UserModel = get_user_model()
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileModel
-        fields = ('id', 'name', 'surname', 'age', 'updated_at', 'created_at')
+        fields = ('id', 'name', 'surname', 'age', 'updated_at', 'created_at', 'user')
         read_only_fields = ('id', 'created_at', 'updated_at')
 
 
@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserModel
         fields = (
             'id', 'email', 'password', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'created_at',
-            'updated_at', 'profile'
+            'updated_at',
         )
         read_only_fields = ('id', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'created_at', 'updated_at')
         extra_kwargs = {
@@ -28,10 +28,13 @@ class UserSerializer(serializers.ModelSerializer):
             }
         }
 
-    def create(self, validated_data):
-        profile = validated_data.pop('profile')
-        profile = ProfileModel.objects.create(**profile)
-        user = UserModel.objects.create_user(profile=profile, **validated_data)
+    def create(self, validated_data: dict):
+        # Перевірте, чи 'name' присутній в validated_data перед вилученням його
+        name = validated_data.get('name', None)
+        surname = validated_data.pop('surname', None)
+        age = validated_data.pop('age', None)
+
+        user = UserModel.objects.create_user(**validated_data, name=name, surname=surname, age=age)
         return user
 
 
