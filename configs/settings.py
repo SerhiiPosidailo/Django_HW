@@ -28,6 +28,8 @@ DEBUG = os.environ.get('DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'users.UserModel'
+
 # Application definition
 
 INSTALLED_APPS = [
