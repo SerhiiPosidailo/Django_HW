@@ -29,7 +29,6 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data: dict):
-        # Перевірте, чи 'name' присутній в validated_data перед вилученням його
         name = validated_data.get('name', None)
         surname = validated_data.pop('surname', None)
         age = validated_data.pop('age', None)
