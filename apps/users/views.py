@@ -1,9 +1,7 @@
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import CreateAPIView
 
 from apps.users.serializers import UserSerializer
 
 
-class UserCreateView(ListCreateAPIView):
+class UserCreateView(CreateAPIView):
     serializer_class = UserSerializer
-
-

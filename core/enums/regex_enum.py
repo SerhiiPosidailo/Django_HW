@@ -11,11 +11,7 @@ class Regex(Enum):
         'Invalid email'
     )
     NAME = (
-        r'^[a-zA-Z]{2-20}$',
-        'Only alphanumeric 2-20 characters.'
-    )
-    SURNAME = (
-        r'^[a-zA-Z]{2-20}$',
+        r'^[A-Z][a-zA-Z]{1-19}$',
         'Only alphanumeric 2-20 characters.'
     )
 

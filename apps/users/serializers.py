@@ -10,16 +10,18 @@ UserModel = get_user_model()
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileModel
-        fields = ('id', 'name', 'surname', 'age', 'updated_at', 'created_at', 'user')
-        read_only_fields = ('id', 'created_at', 'updated_at')
+        fields = ('id', 'name', 'surname', 'age')
 
 
 class UserSerializer(serializers.ModelSerializer):
+
+    profile = ProfileSerializer()
+
     class Meta:
         model = UserModel
         fields = (
             'id', 'email', 'password', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'created_at',
-            'updated_at',
+            'updated_at', 'profile'
         )
         read_only_fields = ('id', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'created_at', 'updated_at')
         extra_kwargs = {
@@ -29,11 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data: dict):
-        name = validated_data.get('name', None)
-        surname = validated_data.pop('surname', None)
-        age = validated_data.pop('age', None)
-
-        user = UserModel.objects.create_user(**validated_data, name=name, surname=surname, age=age)
+        profile = validated_data.pop('profile')
+        user = UserModel.objects.create_user(**validated_data)
+        ProfileModel.objects.create(**profile, user=user)
         return user
-
-
