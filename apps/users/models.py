@@ -25,7 +25,7 @@ class ProfileModel(BaseModel):
     class Meta:
         db_table = 'profile'
 
-    name = models.CharField(max_length=20, validators=[V.RegexValidator(Regex.NAME.pattern, Regex.NAME.msg)])
+    name = models.CharField(max_length=20, validators=[V.RegexValidator(*Regex.NAME.value)])
     surname = models.CharField(max_length=20, validators=[V.RegexValidator(*Regex.NAME.value)])
     age = models.IntegerField(validators=[V.MinValueValidator(15), V.MaxValueValidator(45)])
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name='profile')

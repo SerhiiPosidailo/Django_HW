@@ -10,8 +10,9 @@ class Regex(Enum):
         r'^[\w\.]+@([\w]+\.)+[\w]{2,4}$',
         'Invalid email'
     )
+
     NAME = (
-        r'^[A-Z][a-zA-Z]{1-19}$',
+        r'^[A-Z][a-zA-Z]{1,19}$',
         'Only alphanumeric 2-20 characters.'
     )
 
