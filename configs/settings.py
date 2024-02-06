@@ -37,12 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
     'django_filters',
+    'rest_framework_simplejwt',
 
     # my_apps
     'core',
     'apps.auto_parks',
     'apps.users',
     'apps.cars',
+    'apps.auth',
 ]
 
 MIDDLEWARE = [
