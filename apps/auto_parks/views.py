@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from apps.auto_parks.models import AutoParkModel
@@ -10,6 +11,7 @@ from apps.cars.serializers import CarSerializer
 class AutoParksListCreateView(ListCreateAPIView):
     queryset = AutoParkModel.objects.all()
     serializer_class = AutoParkSerializer
+    permission_classes = (AllowAny,)
 
 
 class AutoParkAddCarView(GenericAPIView):
