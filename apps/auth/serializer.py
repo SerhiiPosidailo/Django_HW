@@ -9,5 +9,7 @@ class EmailSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
 
-class PasswordSerializer(serializers.Serializer):
-    password = serializers.CharField()
+class PasswordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ('password',)
