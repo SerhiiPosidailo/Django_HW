@@ -8,5 +8,5 @@ urlpatterns = [
     path('/<int:pk>/to_user', AdminToUserView.as_view(), name='admin_to_user'),
     path('/<int:pk>/block', UserBlockView.as_view(), name='user_block'),
     path('/<int:pk>/un_block', UserUnBlockView.as_view(), name='user_un_block'),
-
+    # path('/test', TestEmailView.as_view()) -------- TEST URL------------
 ]
