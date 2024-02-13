@@ -14,6 +14,8 @@ const App = () => {
 
     return (
         <div>
+            <h1>ID:</h1>
+            {cars.map(car=><div key={car.id}>{car.id}</div>)}
             <h1>Cars:</h1>
             {cars.map(car=><div key={car.id}>{car.model}</div>)}
             <h1>Year:</h1>
