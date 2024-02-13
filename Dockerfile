@@ -1,0 +1,20 @@
+FROM python:3.12-alpine
+
+MAINTAINER Some Dev
+
+ENV PYTHONUNBUFFERED=1
+# for postgres libpq-dev
+RUN apk update
+RUN apk add --no-cache gcc musl-dev mariadb-dev
+
+Run apk add --no-cache jpeg-dev zlib-dev libjpeg
+
+
+RUN mkdir /app
+WORKDIR /app
+
+RUN pip install --upgrade pip
+
+COPY requirements.txt /tmp
+
+RUN cd /tmp && pip install -r requirements.txt
