@@ -5,6 +5,8 @@ from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
+from drf_yasg.utils import swagger_auto_schema
+
 from core.dataclasses.user_dataclass import UserDataClass
 from core.permissions.is_admin_or_write_only_permission import IsAdminOrWriteOnlyPermission
 from core.permissions.permissions_admin_user import IsSuperUser
@@ -22,10 +24,11 @@ class UserCreateView(ListCreateAPIView):
 
 class MeView(GenericAPIView):
     permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
 
     def get(self, *args, **kwargs):
         user = self.request.user
-        serializer = UserSerializer(user)
+        serializer = self.get_serializer(user)
         return Response(serializer.data, status.HTTP_200_OK)
 
 
@@ -59,7 +62,6 @@ class UserBlockView(GenericAPIView):
     permission_classes = (IsAdminUser,)
     queryset = UserModel.objects.all()
 
-
     def patch(self, *args, **kwargs):
         user: UserDataClass = self.get_object()
         if user.is_active:
@@ -73,6 +75,10 @@ class UserUnBlockView(GenericAPIView):
     queryset = UserModel.objects.all()
     permission_classes = (IsAdminUser,)
 
+    def get_serializer(self, *args, **kwargs):
+        pass
+
+    @swagger_auto_schema(security=[])
     def patch(self, *args, **kwargs):
         user: UserDataClass = self.get_object()
         if not user.is_active:
