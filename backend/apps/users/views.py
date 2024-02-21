@@ -10,6 +10,7 @@ from drf_yasg.utils import swagger_auto_schema
 from core.dataclasses.user_dataclass import UserDataClass
 from core.permissions.is_admin_or_write_only_permission import IsAdminOrWriteOnlyPermission
 from core.permissions.permissions_admin_user import IsSuperUser
+from core.services.jwt_service import JWTService, SocketToken
 
 from apps.users.serializers import UserSerializer
 
@@ -86,6 +87,14 @@ class UserUnBlockView(GenericAPIView):
         serializer = UserSerializer(user)
         user.save()
         return Response(serializer.data, status.HTTP_200_OK)
+
+
+class SocketView(GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, *args, **kwargs):
+        token = JWTService.create_token(self.request.user, SocketToken)
+        return Response({'token': str(token)}, status=status.HTTP_200_OK)
 
 
 # --------TEST-------------
