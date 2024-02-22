@@ -1,9 +1,42 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {carService} from "../service/carService";
+import {socketService} from "../service/socketService";
+import {Car} from "./Car";
 
 const Cars = () => {
+    const [cars, setCars] = useState([])
+    const [trigger, setTrigger] = useState(null)
+
+    useEffect(() => {
+        carService.getAll().then(({data}) => setCars(data))
+    }, [trigger]);
+
+    useEffect(() => {
+        socketInit()
+    }, []);
+
+    const socketInit = async () => {
+        const {cars} = await socketService();
+        const client = await cars();
+
+        client.onopen = () => {
+            console.log('Car Socket connected');
+            client.send(JSON.stringify({
+                action: 'subscribe_to_car_activity',
+                request_id: new Date().getTime()
+            }))
+        }
+        client.onmessage = ({data}) => {
+            // const action = JSON.parse(data.toString());
+            // console.log(action);
+            setTrigger(prev => !prev)
+        }
+
+    }
+
     return (
         <div>
-            Cars
+            {cars.map(car=><Car key={car.id} car={car}/>)}
         </div>
     );
 };

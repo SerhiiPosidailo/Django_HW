@@ -13,8 +13,8 @@ const LoginPage = () => {
     
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <input type="text" placeholder={email} {...register('email')}/>
-            <input type="text" placeholder={password} {...register('password')}/>
+            <input type="text" placeholder={'email'} {...register('email')}/>
+            <input type="text" placeholder={'password'} {...register('password')}/>
             <button>login</button>
         </form>
     );

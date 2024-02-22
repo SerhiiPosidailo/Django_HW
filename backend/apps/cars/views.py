@@ -23,6 +23,7 @@ class CarListCreateView(ListCreateAPIView):
     serializer_class = CarSerializer
     filterset_class = CarFilter
     permission_classes = (AllowAny,)
+    pagination_class = None
 
 
 class CarsRetriveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
