@@ -31,15 +31,14 @@ class ChatConsumer(GenericAsyncAPIConsumer):
             }
         )
 
-        for message in await self.get_last_five_messages():
-            await self.channel_layer.group_send(
-                self.room_name,
-                {
+        if self.scope['user'].is_authenticated:
+            for message in await self.get_last_five_messages():
+                await self.send_json({
                     'type': 'sender',
                     'message': message['body'],
                     'user': message['user']
-                }
-            )
+                })
+
 
     @action()
     async def send_message(self, data, request_id, action):
@@ -67,4 +66,4 @@ class ChatConsumer(GenericAsyncAPIConsumer):
 
     @database_sync_to_async
     def get_last_five_messages(self):
-        return [{'body': item.body, 'user': item.user.profile.name} for item in ChatModel.objects.order_by('-id')[:5]]
+        return [{'body': item.body, 'user': item.user.profile.name}for item in ChatModel.objects.order_by('-id')[:5]]
